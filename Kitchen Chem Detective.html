@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://world.openfoodfacts.org; media-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Kitchen Chem Detective</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Nunito:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#fff4ea;--sf:#fffaf4;--ink:#4b2e2b;--mu:#85665e;--gr:#b04a5a;--tu:#ffd37a;--rd:#c2493d;--ln:#f3d9c8;--ok:#5a9a67;--b1:#ffd9c2;--b2:#ffe9a8;--b3:#ffc8d2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b1d1c;--sf:#3a2826;--ink:#fbe9de;--mu:#d3b3a6;--gr:#f2a3ae;--tu:#ffd37a;--rd:#ff9b8f;--ln:#54403c;--ok:#a9d8a8;--b1:#4a2c2a;--b2:#4a3d22;--b3:#4a2a33;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2b1d1c;--sf:#3a2826;--ink:#fbe9de;--mu:#d3b3a6;--gr:#f2a3ae;--tu:#ffd37a;--rd:#ff9b8f;--ln:#54403c;--ok:#a9d8a8;--b1:#4a2c2a;--b2:#4a3d22;--b3:#4a2a33;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(circle at 10% 6%,var(--b1) 0,transparent 36%),radial-gradient(circle at 92% 18%,var(--b2) 0,transparent 30%),radial-gradient(circle at 80% 70%,var(--b3) 0,transparent 34%),var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.1;margin:0 0 .5em}
+h1{font-size:clamp(2.3rem,9vw,4rem);font-weight:900;letter-spacing:-.015em;color:var(--gr)}
+h2{font-size:1.75rem;font-weight:900}h3{font-size:1.15rem;font-weight:700}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px;position:relative;z-index:1}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:14px 0 8px}
+.brand{display:flex;gap:8px;align-items:center;background:none;border:0;color:var(--gr);cursor:pointer;font:900 1.2rem Fraunces,Georgia,serif;padding:6px 0}
+nav{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding-bottom:4px}
+nav button{border:1.5px solid var(--ln);background:var(--sf);color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--gr);border-color:var(--gr);color:var(--bg)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--tu);outline-offset:2px}
+.view{display:none;padding:14px 0 40px}.view.on{display:block}
+.card{background:color-mix(in srgb,var(--sf) 90%,transparent);border:1.5px solid var(--ln);border-radius:16px;padding:16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.item{text-align:left;cursor:pointer;font:inherit;color:inherit;margin:0}
+.item:hover{border-color:var(--gr)}
+.item .e{font-size:1.9rem;display:block}.item b{display:block}.item small{display:block;color:var(--mu)}
+.soon{font-style:italic}
+.hero{padding:18px 0 8px}.hero p{max-width:34em;font-size:1.1rem}
+.sr{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}.sr input{flex:1 1 220px}
+.hint{color:var(--mu);font-size:.9rem}
+.btn{background:var(--tu);color:#1d2b24;border:0;border-radius:12px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}
+.btn.alt{background:transparent;border:1.5px solid var(--gr);color:var(--gr)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.note{border-left:4px solid var(--tu);padding:8px 12px;background:color-mix(in srgb,var(--tu) 16%,transparent);border-radius:0 10px 10px 0;font-size:.93rem;margin:10px 0 14px}
+.pass{border-color:var(--ok)}.fail{border-color:var(--rd)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.two .card{margin:0}
+label{display:block;font-weight:700;margin:12px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:11px 12px;border-radius:10px;border:1.5px solid var(--ln);background:var(--sf);color:var(--ink)}
+ol{padding-left:1.3em;margin:.4em 0 .8em}
+.prev{max-width:100%;max-height:260px;border-radius:12px;display:block;margin-bottom:12px}
+pre{white-space:pre-wrap;word-break:break-word;font:inherit;margin:0 0 10px}
+#critter{position:fixed;right:-20px;bottom:-10px;width:min(78vw,380px);aspect-ratio:1;color:var(--gr);opacity:.22;pointer-events:none;z-index:0}
+#critter svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:pop .5s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) rotate(-3deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#critter svg{animation:none}}
+footer{position:relative;z-index:1;text-align:center;padding:22px 18px 28px;color:var(--mu);font-size:.9rem;border-top:1.5px dashed var(--ln)}
+footer p{margin:0 0 6px}footer .love{color:var(--ink);font-weight:700;font-size:1rem}
+.art{float:right;width:min(36vw,170px);margin:0 0 6px 10px}
+.hero::after{content:"";display:block;clear:both}
+.promo{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,color-mix(in srgb,var(--tu) 55%,var(--sf)),color-mix(in srgb,var(--gr) 22%,var(--sf)));margin:22px 0}
+.promo h3{font-size:1.4rem}.promo p{margin:0 0 12px}
+.bars{width:110px;height:64px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 6px,var(--ink) 6px 8px,transparent 8px 13px)}
+.score{display:flex;gap:16px;align-items:center}.score h2,.score p{margin:0}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.82rem;font-weight:700;border:1.5px solid var(--mu);margin:2px 0}
+.s-ok{background:color-mix(in srgb,var(--ok) 22%,transparent);border-color:var(--ok)}
+.s-ban{background:color-mix(in srgb,var(--rd) 22%,transparent);border-color:var(--rd)}
+.s-warn{background:color-mix(in srgb,var(--tu) 40%,transparent);border-color:var(--tu)}
+.load{display:flex;gap:10px;align-items:center;margin:12px 0}
+.spin{width:20px;height:20px;border-radius:50%;border:3px solid var(--ln);border-top-color:var(--gr);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+#reader{max-width:420px;margin:12px 0}
+</style>
+</head>
+<body>
+<div id="critter" aria-hidden="true"></div>
+<div class="wrap">
+<header class="top">
+<button class="brand" data-go="home"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6M8 9h4l1 3H7z"/></svg>Kitchen Chem Detective</button>
+<nav><button data-go="home" class="on">Home</button><button data-go="scan">Scan a label</button><button data-go="library">Test library</button><button data-go="photo">Check a photo</button><button data-go="report">Suspect something?</button></nav>
+</header>
+
+<section id="home" class="view on">
+<div class="hero">
+<svg class="art" viewBox="0 0 160 140" aria-hidden="true"><ellipse cx="70" cy="112" rx="52" ry="13" fill="var(--b1)"/><path d="M28 78h84q-4 34-42 34t-42-34z" fill="var(--tu)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/><circle cx="58" cy="70" r="9" fill="var(--b3)" stroke="var(--ink)" stroke-width="3"/><circle cx="80" cy="66" r="8" fill="#cfe6c8" stroke="var(--ink)" stroke-width="3"/><circle cx="108" cy="58" r="26" fill="color-mix(in srgb,var(--sf) 55%,transparent)" stroke="var(--ink)" stroke-width="5"/><path d="m127 80 20 24" stroke="var(--ink)" stroke-width="8" stroke-linecap="round"/><path d="m24 34 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="var(--tu)"/></svg><h1>What's really in your kitchen?</h1>
+<p>Pick an ingredient, run a simple home test, and find out what to do next. No lab needed.</p>
+<div class="sr"><input id="hq" placeholder="Search an ingredient, like milk or honey" aria-label="Search an ingredient"><button class="btn" data-find>Find the test</button></div>
+<p class="hint">Tap anywhere to meet a new lab animal.</p>
+</div>
+<div class="promo card"><div class="bars" aria-hidden="true"></div><div><h3>Scan a packaged food label</h3><p>Scan the barcode or snap the ingredients. We flag allergens and additives checked against FSSAI, EU, US and IARC.</p><button class="btn" data-go="scan">Scan a label</button></div></div>
+<h2>Commonly adulterated in Indian kitchens</h2>
+<div class="grid" id="hg"></div>
+<h2 style="margin-top:28px">How it works</h2>
+<div class="two">
+<div class="card"><h3>Pick your ingredient</h3><p>Find it in the library and see what it is often mixed with.</p></div>
+<div class="card"><h3>Run the home test</h3><p>Follow short steps with things you already have, like a glass of water.</p></div>
+<div class="card"><h3>Know what to do</h3><p>Compare your result, then report it if something looks wrong.</p></div>
+</div>
+</section>
+
+<section id="scan" class="view">
+<h2>Scan a packaged food label</h2>
+<div class="note">Flags come from a curated list checked against FSSAI, EU, US and IARC. Typed ingredients are checked on your device. Barcode lookups use the public Open Food Facts database. This is not medical advice.</div>
+<div class="two">
+<button class="card item" data-bc><span class="e">📷</span><b>Scan barcode</b><small>Use your camera</small></button>
+<button class="card item" data-sample><span class="e">🧪</span><b>Try a sample label</b><small>See how results look</small></button>
+</div>
+<div id="reader"></div>
+<label for="st">Or type or paste the ingredients</label>
+<textarea id="st" rows="3" placeholder="Wheat flour, sugar, palm oil, E129, ..."></textarea>
+<p><button class="btn" data-an>Analyse ingredients</button></p>
+<div id="sl" class="load" role="status" hidden><span class="spin"></span><span id="sm"></span></div>
+<div id="so" aria-live="polite"></div>
+</section>
+
+<section id="library" class="view">
+<div id="lb"><h2>Test library</h2>
+<label for="ls">Search</label><input id="ls" placeholder="Milk, honey, salt..."><div class="grid" id="lg" style="margin-top:14px"></div></div>
+<div id="ld" hidden></div>
+</section>
+
+<section id="photo" class="view">
+<h2>Check your test result with a photo</h2>
+<div class="note">Draft preview. Your photo stays on your device and nothing is analysed yet, so you compare it with the guide yourself. Automatic label reading comes next.</div>
+<label for="ps">Which test did you do?</label><select id="ps"></select>
+<label for="pf">Add a photo of your result</label><input id="pf" type="file" accept="image/*">
+<div id="pc" style="margin-top:14px"></div>
+<button class="btn alt" disabled>Scan the label (coming soon)</button>
+</section>
+
+<section id="report" class="view">
+<h2>Suspect something?</h2>
+<div class="note"><b>Before you report:</b> do not eat or sell the product. Keep the pack sealed, keep the bill, and photograph the label (batch number, expiry date, FSSAI licence number), the product, and your test result.</div>
+<div class="card">
+<label for="rp">Product</label><input id="rp" placeholder="For example: loose turmeric powder">
+<label for="rb">Brand and batch number</label><input id="rb">
+<label for="rw">Where you bought it</label><input id="rw" placeholder="Shop name and area, or website">
+<label for="rt">Home test you did</label><input id="rt" placeholder="For example: water glass test on honey">
+<label for="rn">What you noticed</label><textarea id="rn" rows="3"></textarea>
+<p><button class="btn" data-gen>Build my complaint summary</button></p>
+</div>
+<div id="ro" class="card" hidden><pre id="rx"></pre><button class="btn alt" data-copy>Copy summary</button> <span id="rc" class="hint"></span>
+<p class="hint">Send this through FSSAI's Food Safety Connect. Official contact details will be added here once verified.</p></div>
+</section>
+</div>
+
+<footer>
+<p class="love">Made with love by Ayushi and Utkarsh</p>
+<p>Draft for review. Home tests give a hint, not a lab result. Check every guide against FSSAI's rapid-test guidance before launch.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+const I=[
+{n:'Milk',e:'🥛',b:'Water, starch, detergent',t:[
+{h:'Water dilution (slant test)',u:'A clean, polished slanted plate',s:['Place one drop of milk on the slanted surface.','Watch how it flows down.'],p:'Flows slowly and leaves a white trail.',f:'Runs fast and leaves little or no trail.'},
+{h:'Starch (iodine test)',u:'Tincture iodine from a pharmacy, a spoon, a cup',s:['Boil 2 spoons of milk and let it cool.','Add 1 or 2 drops of tincture iodine.','Check the colour after a few seconds.'],p:'No colour change.',f:'Turns blue, so starch is present.'}]},
+{n:'Honey',e:'🍯',b:'Sugar syrup',t:[{h:'Water glass test',u:'A glass of water, a spoon',s:['Fill a glass with plain water.','Add 1 spoon of honey and do not stir.','Watch for a minute.'],p:'Settles at the bottom as a lump.',f:'Dissolves or spreads out quickly.'}]},
+{n:'Salt',e:'🧂',b:'Chalk powder',t:[{h:'Chalk test',u:'A glass of water, a spoon',s:['Stir 1 spoon of salt into a glass of water.','Wait a minute and look at the water.'],p:'Dissolves into clear water.',f:'Water turns white and cloudy.'}]},
+{n:'Chilli powder',e:'🌶️',b:'Brick powder, artificial colour',t:[{h:'Sinking test',u:'A glass of water, a spoon',s:['Sprinkle 1 spoon of powder on the water.','Do not stir. Watch what sinks and what spreads.'],p:'Floats, with little colour spreading.',f:'Grit sinks fast, or colour streaks out quickly.'}]},
+{n:'Turmeric',e:'🟡',b:'Artificial yellow colours, lead chromate',t:[]},
+{n:'Ghee',e:'🧈',b:'Vanaspati, mashed potato',t:[]},
+{n:'Tea leaves',e:'🍵',b:'Used leaves, added colour',t:[]},
+{n:'Black pepper',e:'⚫',b:'Papaya seeds',t:[]}];
+let k=0;I.forEach(x=>x.t.forEach(t=>{t.id=k++;t.n=x.n}));
+const F=I.flatMap(x=>x.t),$=s=>document.querySelector(s);
+const C=[
+'<path d="M62 92 52 56l27 15q21-6 42 0l27-15-10 36q2 28-38 38-40-10-38-38z"/><circle cx="84" cy="94" r="3" fill="currentColor"/><circle cx="116" cy="94" r="3" fill="currentColor"/><circle cx="100" cy="112" r="4" fill="currentColor"/><path d="M72 132q-8 40 10 52h36q18-12 10-52M132 168q42-4 36-48-6 28-34 32M152 138v16l-13 26h38l-13-26v-16M147 138h16M146 168h20"/><circle cx="158" cy="124" r="3"/><circle cx="166" cy="112" r="2"/>',
+'<ellipse cx="100" cy="118" rx="46" ry="56"/><path d="M66 74 60 52l23 14M134 74l6-22-23 14"/><circle cx="83" cy="96" r="14"/><circle cx="117" cy="96" r="14"/><circle cx="83" cy="96" r="4" fill="currentColor"/><circle cx="117" cy="96" r="4" fill="currentColor"/><path d="m95 110 5 9 5-9zM80 140q20 14 40 0M84 172v10M116 172v10"/><circle cx="162" cy="128" r="17"/><path d="M150 141 132 160"/>',
+'<ellipse cx="82" cy="42" rx="10" ry="30"/><ellipse cx="118" cy="42" rx="10" ry="30"/><circle cx="100" cy="100" r="32"/><circle cx="90" cy="96" r="3" fill="currentColor"/><circle cx="110" cy="96" r="3" fill="currentColor"/><circle cx="100" cy="106" r="3" fill="currentColor"/><path d="M95 113q5 5 10 0M70 130q-10 46 30 50 40-4 30-50M150 122v44a8 8 0 0 0 16 0v-44M145 122h26M150 146h16"/><circle cx="152" cy="106" r="3"/><circle cx="160" cy="96" r="2"/>',
+'<circle cx="100" cy="102" r="35"/><path d="m70 80-2-27 22 16M130 80l2-27-22 16"/><circle cx="86" cy="100" r="10"/><circle cx="114" cy="100" r="10"/><path d="M96 100h8M97 116l3 4 3-4zM66 112H44M66 120l-20 6M134 112h22M134 120l20 6M68 134q-8 46 32 50 40-4 32-50M134 172q40 6 30-40M22 148v32h28v-32M18 148h36M22 164h28"/><circle cx="36" cy="136" r="3"/><circle cx="44" cy="126" r="2"/>'];
+let ci=-1,pu='';
+function swap(){let n;do{n=Math.floor(Math.random()*C.length)}while(n===ci);ci=n;$('#critter').innerHTML='<svg viewBox="0 0 200 200">'+C[n]+'</svg>'}
+function go(v){['home','scan','library','photo','report'].forEach(x=>$('#'+x).classList.toggle('on',x===v));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));window.scrollTo(0,0)}
+function cards(list){return list.map(({x,i})=>`<button class="card item" data-open="${i}"><span class="e">${x.e}</span><b>${x.n}</b><small>${x.b}</small>${x.t.length?'':'<small class="soon">Guide coming soon</small>'}</button>`).join('')}
+const all=I.map((x,i)=>({x,i}));
+function list(){const q=$('#ls').value.toLowerCase().trim();$('#lg').innerHTML=cards(all.filter(({x})=>(x.n+' '+x.b).toLowerCase().includes(q)))||''; if(!$('#lg').innerHTML)$('#lg').innerHTML='<p>No match yet. Try another ingredient, like milk or honey.</p>'}
+function showList(){$('#ld').hidden=true;$('#lb').hidden=false;list()}
+function openItem(i){const x=I[i];go('library');$('#lb').hidden=true;const d=$('#ld');d.hidden=false;
+d.innerHTML=`<button class="btn alt" data-back>All ingredients</button><h2 style="margin-top:16px">${x.e} ${x.n}</h2><p>Often mixed with: ${x.b}.</p><div class="note">Home tests are only a hint. Use them to decide whether to look closer.</div>`+
+(x.t.length?x.t.map(t=>`<div class="card"><h3>${t.h}</h3><p><b>You need:</b> ${t.u}</p><ol>${t.s.map(s=>`<li>${s}</li>`).join('')}</ol><div class="two"><div class="card pass"><b>Looks fine</b><br>${t.p}</div><div class="card fail"><b>May be adulterated</b><br>${t.f}</div></div><p style="margin-top:12px"><button class="btn" data-photo="${t.id}">Check my result with a photo</button></p></div>`).join(''):'<div class="card">We are still writing this guide. It will follow FSSAI\'s rapid-test methods.</div>')}
+function rc(){const t=F[$('#ps').value];$('#pc').innerHTML=(pu?`<img class="prev" src="${pu}" alt="Your test result">`:'')+`<div class="two"><div class="card pass"><b>Looks fine</b><br>${t.p}<p><button class="btn alt" data-v="p">Mine looks like this</button></p></div><div class="card fail"><b>May be adulterated</b><br>${t.f}<p><button class="btn alt" data-v="f">Mine looks like this</button></p></div></div><div id="pr" style="margin:12px 0"></div>`}
+function verdict(v){$('#pr').innerHTML=v==='p'?'<div class="card pass"><b>Looks fine for this test.</b> One home test is only a hint. If anything still seems off, try a second test or check the label and expiry date.</div>':'<div class="card fail"><b>This may be adulterated.</b> Repeat the test once to be sure. Then keep the pack sealed, photograph the label and bill, and report it.</div><button class="btn" data-go="report">Report it</button>'}
+function gen(){const v=i=>$(i).value.trim()||'Not given';$('#rx').textContent=`Complaint summary\nDate: ${new Date().toLocaleDateString('en-IN')}\nProduct: ${v('#rp')}\nBrand and batch: ${v('#rb')}\nBought from: ${v('#rw')}\nHome test done: ${v('#rt')}\nWhat I noticed: ${v('#rn')}\nI have kept the sealed pack, label photos and the bill.`;$('#ro').hidden=false;$('#rc').textContent=''}
+document.addEventListener('click',e=>{const t=e.target,g=t.closest('[data-go]'),o=t.closest('[data-open]'),p=t.closest('[data-photo]'),v=t.closest('[data-v]');
+if(g)go(g.dataset.go);
+if(o)openItem(+o.dataset.open);
+if(t.closest('[data-back]'))showList();
+if(t.closest('[data-find]')){$('#ls').value=$('#hq').value;go('library');showList()}
+if(p){$('#ps').value=p.dataset.photo;rc();go('photo')}
+if(v)verdict(v.dataset.v);
+if(t.closest('[data-gen]'))gen();
+if(t.closest('[data-bc]'))startBc();
+if(t.closest('[data-an]'))show($('#st').value);
+if(t.closest('[data-sample]')){$('#st').value=SAMPLE;show(SAMPLE)}
+if(t.closest('[data-copy]')){try{navigator.clipboard.writeText($('#rx').textContent).then(()=>$('#rc').textContent='Copied',()=>$('#rc').textContent='Select the text to copy it')}catch(x){$('#rc').textContent='Select the text to copy it'}}
+swap()});
+$('#hq').addEventListener('keydown',e=>{if(e.key==='Enter'){$('#ls').value=$('#hq').value;go('library');showList()}});
+$('#ls').addEventListener('input',list);
+$('#ps').addEventListener('change',rc);
+$('#pf').addEventListener('change',e=>{const f=e.target.files[0];if(f){pu=URL.createObjectURL(f);rc()}});
+const API=window.API_BASE||'',L={ok:'Allowed',ban:'Banned',warn:'Label warning',chk:'Check rule'};
+const SAMPLE='Wheat flour, sugar, palm oil, skimmed milk powder, emulsifier (soy lecithin), colour (E129, tartrazine), preservative (BHA E320), flour treatment agent (potassium bromate), sweetener (aspartame), salt';
+/* Curated list: patterns, name, FSSAI, EU, US, IARC, note. Verify each row against the current rules before launch. */
+const A=[
+['potassium bromate|e924|e924a','Potassium bromate (E924)','ban','ban','ok','2B','Flour improver. Banned in India and the EU.'],
+['titanium dioxide|e171','Titanium dioxide (E171)','chk','ban','ok','—','Banned as a food additive in the EU since 2022. IARC 2B applies to inhaled dust, not food.'],
+['azodicarbonamide|e927a','Azodicarbonamide (E927a)','chk','ban','ok','3','Flour treatment agent, not authorised in the EU.'],
+['brominated vegetable oil|bvo','Brominated vegetable oil','chk','ban','ban','—','Authorisation removed in the US in 2024.'],
+['bha|butylated hydroxyanisole|e320','BHA (E320)','ok','ok','ok','2B','Preservative used in fats and snacks.'],
+['bht|butylated hydroxytoluene|e321','BHT (E321)','ok','ok','ok','3','Preservative used in fats and snacks.'],
+['aspartame|e951','Aspartame (E951)','warn','ok','ok','2B','Indian labels must warn people with phenylketonuria. Safety bodies have kept the daily limit unchanged.'],
+['tartrazine|sunset yellow|carmoisine|ponceau|quinoline yellow|allura red|red 40|yellow 5|yellow 6|e102|e104|e110|e122|e124|e129','Synthetic food dye','ok','warn','ok','—','EU labels must warn that some of these dyes may affect attention in children.'],
+['sodium nitrite|sodium nitrate|potassium nitrite|potassium nitrate|e249|e250|e251|e252','Nitrites and nitrates','ok','ok','ok','2A','IARC 2A when eaten in ways that form nitrosamines, mostly in cured meats.'],
+['monosodium glutamate|msg|e621','Monosodium glutamate (E621)','warn','ok','ok','—','Indian labels advise against use in food for infants under 12 months.']];
+const G=[['Peanuts','peanut|groundnut'],['Tree nuts','almond|cashew|walnut|hazelnut|pistachio|pecan|tree nut'],['Milk','milk|whey|casein|lactose|ghee|butterfat'],['Egg','egg|albumin'],['Gluten','wheat|gluten|barley|rye|maida|semolina|malt'],['Soy','soy|soya'],['Fish','fish|anchovy'],['Shellfish','shrimp|prawn|crab|lobster|shellfish|crustacean'],['Sesame','sesame|gingelly'],['Sulphites','sulphite|sulfite|sulphur dioxide|e22[0-8]']];
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),chip=(l,x)=>`<span class="tag s-${x}">${l}: ${L[x]}</span>`;
+const has=(p,n)=>new RegExp('\\b('+p+')\\b').test(n);
+function busy(m){$('#sl').hidden=!m;$('#sm').textContent=m||''}
+function err(m){busy('');$('#so').innerHTML='<div class="card fail"><b>'+m+'</b></div>'}
+function score(f){let n=100;f.forEach(a=>{if(a.slice(2,5).includes('ban'))n-=25;else if(['1','2A','2B'].includes(a[5]))n-=15;else if(a.slice(2,5).includes('warn'))n-=10;else n-=5});return Math.max(0,n)}
+function show(txt,nut){txt=(txt||'').trim();if(!txt){err('Add an ingredient list first, or scan a barcode or label.');return}
+const n=txt.toLowerCase().replace(/\bins\s*-?\s*(\d)/g,'e$1').replace(/\be\s*-?\s*(\d{3})/g,'e$1'),f=A.filter(a=>has(a[0],n)),g=G.filter(a=>has(a[1],n)),s=score(f),c=s>=80?'ok':s>=50?'tu':'rd',v=s>=80?'Looks fine':s>=50?'Take a closer look':'Think twice';
+$('#so').innerHTML=`<div class="card score"><svg viewBox="0 0 100 100" width="110" height="110" role="img" aria-label="Score ${s} out of 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ln)" stroke-width="10"/><circle cx="50" cy="50" r="42" fill="none" stroke="var(--${c})" stroke-width="10" stroke-linecap="round" stroke-dasharray="${s*2.64} 264" transform="rotate(-90 50 50)"/><text x="50" y="58" text-anchor="middle" font-size="26" font-weight="800" fill="currentColor">${s}</text></svg><div><h2>${v}</h2><p>${f.length} additive flag${f.length===1?'':'s'} and ${g.length} allergen${g.length===1?'':'s'} found.</p></div></div>`+
+`<div class="card"><h3>Allergen warnings</h3>${g.length?g.map(a=>`<span class="tag s-ban"><b>⚠ ${a[0]}</b></span>`).join(' '):'<p>No common allergens found in the text.</p>'}</div>`+
+`<div class="card"><h3>Regulatory alerts</h3>${f.length?f.map(a=>`<p><b>${a[1]}</b><br>${chip('FSSAI',a[2])} ${chip('EU',a[3])} ${chip('US',a[4])} <span class="tag s-chk">IARC ${a[5]==='—'?'n/a':a[5]}</span><br><small>${a[6]}</small></p>`).join(''):'<p>None of the additives on our list were found.</p>'}</div>`+
+`<div class="card"><h3>Ingredients</h3><p>${esc(txt)}</p></div><div class="card"><h3>Nutritional facts</h3>${nut||'<p>Scan a barcode to see nutrition per 100 g.</p>'}</div>`}
+let bq;
+async function startBc(){if(!window.Html5Qrcode){err('The camera scanner could not load. Type the ingredients instead.');return}
+busy('Starting the camera...');
+try{bq=new Html5Qrcode('reader');await bq.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:140}},async code=>{try{await bq.stop()}catch(e){}$('#reader').innerHTML='';lookup(code)});busy('')}catch(e){err('Camera not available. Allow camera access, or type the ingredients.')}}
+async function lookup(code){busy('Looking up '+code+'...');
+try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json?fields=product_name,ingredients_text,nutriments'),d=await r.json();if(d.status!==1||!d.product.ingredients_text)throw 0;
+const m=d.product.nutriments||{},q=(l,k,u)=>m[k]!=null?`<li>${l}: ${Number(m[k]).toFixed(1)} ${u}</li>`:'';
+$('#st').value=d.product.ingredients_text;busy('');show(d.product.ingredients_text,`<ul>${q('Energy','energy-kcal_100g','kcal')}${q('Fat','fat_100g','g')}${q('Sugar','sugars_100g','g')}${q('Salt','salt_100g','g')}</ul>`)}
+catch(e){err('We could not find ingredients for that barcode. Type them in or photograph the label.')}}
+$('#hg').innerHTML=cards(all);
+$('#ps').innerHTML=F.map(t=>`<option value="${t.id}">${t.n}: ${t.h}</option>`).join('');
+rc();list();swap();
+</script>
+</body>
+</html>
